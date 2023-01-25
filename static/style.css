@@ -1,0 +1,22 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font-family: Helvetica;
+}
+
+#tree {
+    width: 100%;
+    height: 100%;
+}
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
