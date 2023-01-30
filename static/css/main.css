@@ -1140,6 +1140,7 @@ section {
 # Featured Services Section
 --------------------------------------------------------------*/
 .featured-services .service-item {
+  box-shadow: 5px 5px 25px rgba(var(--color-secondary-rgb),0.1);
   padding: 30px;
   transition: all ease-in-out 0.4s;
   background: var(--color-white);
@@ -1151,7 +1152,7 @@ section {
 }
 
 .featured-services .service-item .icon i {
-  color: var(--color-primary);
+  color: var(--color-white);
   font-size: 36px;
   transition: 0.3s;
 }
@@ -1167,21 +1168,51 @@ section {
   transition: ease-in-out 0.3s;
 }
 
-.featured-services .service-item p {
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
+.featured-services .service-item h1 {
+  color: var(--color-secondary);
+  transition: ease-in-out 0.3s;
 }
 
+
 .featured-services .service-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 0 60px 0 rgba(var(--color-secondary-rgb), 0.1);
+  transform: translateY(-15px);
+  box-shadow: 0px 0 10px 0 rgba(var(--color-secondary-rgb),0.1);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.95);
+  
+  
 }
 
 .featured-services .service-item:hover h4 a {
   color: var(--color-primary);
 }
+.featured-services .service-item:hover h1 {
+  color: var(--color-primary);
+}
+.featured-services .service-item .icon {
+  margin: 0;
+  width: 72px;
+  height: 72px;
+  background: var(--color-primary);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--color-white);
+  font-size: 28px;
+  transition: ease-in-out 0.3s;
+  border: 6px solid var(--color-white);
+}
 
+
+.featured-services .service-item:hover .icon {
+  background: var(--color-white);
+  border: 2px solid var(--color-primary);
+}
+
+.featured-services .service-item:hover .icon i {
+  color: var(--color-primary);
+}
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/

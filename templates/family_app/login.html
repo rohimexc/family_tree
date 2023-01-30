@@ -91,11 +91,15 @@
                       <button class="btn btn-primary w-100" type="submit">Login</button>
                     </div>
                     <div class="col-12 text-center">
-                      <p class="small mb-0">Hubungi Super-admin untuk membuat akun</p>
+                      <p class="small mb-0">
+                        <a target='_blank' href="https://wa.me/+6287776481050">Buat Akun</a>
+                        atau
+                        <a target='_blank' href="https://wa.me/+6287776481050">Lupa Password</a>
+                      </p>
                     </div>
                     {% if messages %}
                     {% for message in messages %}
-                    <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    <div {% if message.tags %} class="alert alert-{{message.tags}} bg-{{message.tags}} text-light border-0 alert-dismissible fade show" {% endif %} role="alert">
                       {{ message }}
                       <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>                    
@@ -132,6 +136,7 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'js_2/main.js' %}"></script>
+
 
 </body>
 

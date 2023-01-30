@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Register Akun</title>
+  <title>Tambah Keluarga</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -37,9 +37,48 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <style>
+    .editOption {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border-radius: 0.375rem;
+      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      position: relative;
+    }
+    .ceditOption {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border-radius: 0.375rem;
+      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      position: relative;
+    }
+  </style>
 </head>
 
 <body>
+
 
   <main>
     <div class="container">
@@ -80,27 +119,102 @@
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">No HP</label>
-                      {{ form.no_hp | as_crispy_field}}
+                      <label for="yourPhone" class="form-label">No HP</label>
+                      {{ form.phone | as_crispy_field}}
                       <div class="invalid-feedback">Please enter your phoneNumber</div>
                     </div>
+                    <div class="row mt-3">
+                      <div class="col">
+                        <label for="yourBorn" class="form-label">Tgl Lahir</label>
+                        {{ form.born | as_crispy_field}}
+                        <div class="invalid-feedback">Please enter your dateBirth</div>
+                      </div>
+  
+                      <div class="col">
+                        <label for="yourGender" class="form-label">Jenis Kelamin</label>
+                        {{ form.gender | as_crispy_field}}
+                        <div class="invalid-feedback">Please enter your gender</div>
+                      </div>
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Tgl Lahir</label>
-                      {{ form.tgl_lahir | as_crispy_field}}
-                      <div class="invalid-feedback">Please enter your dateBirth</div>
                     </div>
+                   
+                    <div class="row mt-3">
+                      <div class="col">
+                        <label for="yourCountry" class="form-label">Negara</label>
+                        <select class="form-select" name='country' id="country" aria-label="Default select example">
+                          <option selected>Pilih Negara</option>
+                          {% for a in country %}
+                          <option class="non" value="{{a.country}}">{{a.country}}</option>
+                          {% endfor %}
+                          <option class="ceditable" value="other" >Lainnya</option>
+                        </select>
+                        <input class="ceditOption" style="display:none;"></input>
+                        <div class="invalid-feedback">Please enter your Country</div>
+                      </div>
+  
+                      <div class="col">
+                        <label for="yourCity" class="form-label">Kota</label>
+                        <select class="form-select" id="city" name='city' aria-label="Default select example">
+                          <option selected>Pilih Kota</option>
+                          {% for a in city %}
+                          <option class="non" value="{{a.city}}">{{a.city}}</option>
+                          {% endfor %}
+                          <option class="editable" value="other" >Lainnya</option>
+                        </select>
+                        <input class="editOption" style="display:none;"></input>
+                        <div class="invalid-feedback">Please enter your City</div>
+                      </div>
+                      <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+                      <script>
+                        var initialText = $('.editable').val();
+                        $('editOption').val(initialText);
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Negara</label>
-                      {{ form.negara | as_crispy_field}}
-                      <div class="invalid-feedback">Please enter your Country</div>
+                        $('#city').change(function(){
+                          var selected = $('option:selected',this).attr('class');
+                          var optionText =$('.editable').text();
+                          if(selected == 'editable'){
+                            $('.editOption').show();
+                            $('.editOption').keyup(function(){
+                              var editText = $('.editOption').val();
+                              $('.editable').val(editText);
+                              $('.editable').html(editText);
+                            });
+                          }
+                          else{
+                            $('.editOption').hide();
+                          }
+                        });
+
+                        $('#country').change(function(){
+                          var selected = $('option:selected',this).attr('class');
+                          var optionText =$('.ceditable').text();
+                          if(selected == 'ceditable'){
+                            $('.ceditOption').show();
+                            $('.ceditOption').keyup(function(){
+                              var editText = $('.ceditOption').val();
+                              $('.ceditable').val(editText);
+                              $('.ceditable').html(editText);
+                            });
+                          }
+                          else{
+                            $('.ceditOption').hide();
+                          }
+                        });
+                        
+                      </script>
+
                     </div>
-
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Kota</label>
-                      {{ form.kota | as_crispy_field}}
-                      <div class="invalid-feedback">Please enter your City</div>
+                    <div class="row mt-3">
+                      <div class="col">
+                        <label for="yourRelation" class="form-label">Hubungan</label>
+                        {{ form.relation | as_crispy_field}}
+                        <div class="invalid-feedback">Please enter your Relation</div>
+                      </div>
+                      <div class="col">
+                        <label for="yourRelationForm" class="form-label">Dari</label>
+                        {{ form.relation_from | as_crispy_field}}
+                        <div class="invalid-feedback">Please enter your Relation From</div>
+                      </div>
                     </div>
 
                     <div class="col-12">

@@ -18,8 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
-
   <!-- Vendor CSS Files -->
+  
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
@@ -62,7 +62,7 @@
         <i class="bi bi-list mobile-nav-toggle d-none"></i>
       </nav><!-- .navbar -->
 
-      <a class="btn-getstarted scrollto" href="{% url 'login' %}">Login</a>
+      <a class="btn-getstarted scrollto mr-3" href="{% url 'login' %}">Login</a>
 
     </div>
   </header><!-- End Header -->
@@ -70,7 +70,7 @@
   <section id="hero-animated" class="hero-animated d-flex align-items-center">
     <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
       <img src="{% static 'img/hero-carousel/hero-carousel-3.svg' %}" class="img-fluid animated">
-      <h2>Selamat datang di <span>Family Tree Sisilia</span></h2>
+      <h2>Selamat datang di <span>Family Tree of Husain</span></h2>
       <p>Temukan Silsilah Keluargamu dan Hari Ulang Tahun Mereka dengan Sekali Sentuhan</p>
       <div class="d-flex">
         <a href="#family" class="btn-get-started scrollto">Mulai</a>
@@ -80,12 +80,66 @@
   </section>
 
   <main id="main">
+    <section id="featured-services" class="featured-services">
+      <div class="container pt-4">
+
+        <div class="row gy-4">
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate m-0" data-aos="zoom-out">
+            <div class="service-item position-relative">
+              <div class="d-flex justify-content-between">
+                <div class="icon"><i class="bi bi-person-heart"></i></div>
+                <h1>10</h1>
+              </div>
+              <h4><a href="" class="stretched-link">Jumlah Anak</a></h4>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate m-0" data-aos="zoom-out" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="d-flex justify-content-between">
+                <div class="icon"><i class="bi bi-person-hearts"></i></div>
+                <h1>10</h1>
+              </div>
+              <h4><a href="" class="stretched-link">Jumlah Cucu</a></h4>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate m-0" data-aos="zoom-out" data-aos-delay="400">
+            <div class="service-item position-relative">
+              <div class="d-flex justify-content-between">
+                <div class="icon"><i class="bi bi-person-fill-down"></i></div>
+                <h1>10</h1>
+              </div>
+              <h4><a href="" class="stretched-link">Jumlah Cicit</a></h4>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate m-0" data-aos="zoom-out" data-aos-delay="600">
+            <div class="service-item position-relative">
+              <div class="d-flex justify-content-between">
+                <div class="icon"><i class="bi bi-person-lines-fill"></i></div>
+                <h1>10</h1>
+              </div>
+              <h4><a href="" class="stretched-link">Jumlah Piut</a></h4>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+    </section>
 
     <section id="family" class="pricing">
       <div class="container" data-aos="fade-up">
 
-        <div class="section-header">
+        <div class="section-header pb-1">
           <h2>Our Family</h2>
+          <div class="alert alert-info bg-text-info border-0 alert-dismissible fade show" role="alert">
+            <p>Untuk perbaikan data, dapat menghubungi <a target='_blank' href="https://wa.me/+6287776481050">sisilia</a></p>
+            <button type="button" class="btn-close btn-close-warning" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div> 
+          </p>
         </div>
 
         <div class="row gy-4">
@@ -138,6 +192,7 @@
 
   <div id="preloader"></div>
 
+
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
@@ -145,9 +200,9 @@
   <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-
   <!-- Template Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
+  
 
 </body>
 

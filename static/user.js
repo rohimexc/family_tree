@@ -1,6 +1,7 @@
 
 var family = new FamilyTree(document.getElementById('tree'), {
-    mouseScrool: FamilyTree.none,
+    mouseScrool: FamilyTree.action.scroll,
+    miniMap: true,
     mode: 'light',
     template: 'hugo',
     roots: [3],
@@ -16,6 +17,7 @@ var family = new FamilyTree(document.getElementById('tree'), {
     editForm: {
         titleBinding: "name",
         photoBinding: "photo",
+        
 
         generateElementsFromFields: true,
         elements: [

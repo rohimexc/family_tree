@@ -1,0 +1,1 @@
+[{"id": 7, "mid": 1, "fid": 2, "name": "Anak Husein", "gender": "male", "born": "2023-01-02", "country": "Indonesia", "city": "Palu", "phone": "082252009500", "email": "unit@gmail.com"}, {"id": 8, "pids": [7], "name": "Istri anak husain", "gender": "female", "born": "2023-01-03", "country": "Indonesia", "city": "Palu", "phone": "082252009575", "email": "unit@gmail.com"}]
