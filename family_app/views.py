@@ -10,6 +10,8 @@ from datetime import date
 import json
 from django.http import JsonResponse
 from django.utils import timezone
+import re
+
 today = timezone.now().date()
 def index(request):
     family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born', 'country', 'city', 'phone','email'))
@@ -103,6 +105,7 @@ def database(request):
 def tambahKeluarga(request):
     citydb=OptionCity.objects.all()
     countrydb=OptionCountry.objects.all()
+    optionfamily=Family.objects.all()
     form = Familyform()
     for row in OptionCity.objects.all().reverse():
         if OptionCity.objects.filter(city=row.city).count() > 1:
@@ -127,43 +130,28 @@ def tambahKeluarga(request):
 
             instance = form.save(commit=False)
             relation= form.cleaned_data['relation']
-            relation_from=form.cleaned_data['relation_from']
-            relation_idf=relation_from.idf
+            relation_idf=request.POST.get('relation_from')
             if relation == 'suami' or  relation == 'istri':
-                
                 instance.pids=relation_idf
                 instance.city=city
                 instance.country=country
                 instance.save()
-                optionFamily=OptionFamily.objects.create(
-                    idf=instance.id,
-                    name=form.cleaned_data['name'],
-                    pids=relation_idf
-                )
-                optionFamily.save()
-                optionFamilyGet=OptionFamily.objects.get(idf=relation_idf)
+                optionFamilyGet=Family.objects.get(id=relation_idf)
                 optionFamilyGet.pids=instance.id
                 optionFamilyGet.save()
             elif relation == 'anak perempuan' or  relation == 'anak laki-laki':
                 instance.fid=relation_idf
-                instance.mid=relation_from.pids
+                instance.mid=Family.objects.get(id=relation_idf).pids
                 instance.city=city
                 instance.country=country
                 instance.save()
-                optionFamilyGet=OptionFamily.objects.create(
-                    idf=instance.id,
-                    name=form.cleaned_data['name'],
-                    fid=relation_idf,
-                    mid=relation_from.pids
-                )
-                optionFamilyGet.save()
             else:
                 instance.city=city
                 instance.country=country
                 instance.save()
                 gender=form.cleaned_data['gender']
 
-                optionFamilyGet=OptionFamily.objects.get(idf=relation_idf)
+                optionFamilyGet=Family.objects.get(id=relation_idf)
                 if gender == 'male':
                     optionFamilyGet.mid=instance.id
                 else:
@@ -175,7 +163,7 @@ def tambahKeluarga(request):
             return redirect('database')
         else:
             messages.warning(request, "Pastikan Mengisi Semua data yang diminta")
-    context={'form':form, 'city':citydb, 'country':countrydb}
+    context={'form':form, 'city':citydb, 'country':countrydb, 'optionfamily':optionfamily}
     return render(request, 'family_app/tambah_keluarga.html',context)
 
 @login_required(login_url='login')

@@ -44,7 +44,6 @@ class Family(models.Model):
     country=models.CharField(null=True,max_length=200, blank=True)
     city=models.CharField(null=True,max_length=200, blank=True)
     relation=models.CharField(null=True, choices=rl, max_length=200,blank=True)
-    relation_from=models.ForeignKey(OptionFamily, on_delete=models.CASCADE, null=True,blank=True)
     photo=models.ImageField(upload_to='profil',null=True)
     mid=models.IntegerField(null=True, blank=True)
     fid=models.IntegerField(null=True, blank=True)

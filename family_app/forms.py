@@ -36,7 +36,7 @@ class NewUserForm(UserCreationForm):
         return user
     
 class Familyform(ModelForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control', 'type':'email','required':True,}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control', 'type':'email',}))
     def __init__(self, *args, **kwargs):
         super(Familyform, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -48,18 +48,16 @@ class Familyform(ModelForm):
         self.fields['death'].empty_label = '--'
         self.fields['gender'].empty_label = 'Pilih Gender'
         self.fields['relation'].empty_label = 'Pilih Hubungan'
-        self.fields['relation_from'].empty_label = 'Pilih Hubungan Dari'
         self.fields['photo'].empty_label = '--'
     class Meta:
         model=Family
-        fields='name','phone','email','gender','born','death','relation','relation_from','photo'
+        fields='name','phone','email','gender','born','death','relation','photo'
         widgets={
             'name':forms.TextInput(attrs={'class':'form-control','required':True,}),
-            'phone':forms.TextInput(attrs={'class':'form-control','required':True,}),
+            'phone':forms.TextInput(attrs={'class':'form-control',}),
             'gender':forms.Select(attrs={'class':'form-control','required':True,}),
             'born':DateInput(attrs={'class':'form-control','required':True,}),
             'death':DateInput(attrs={'class':'form-control'}),
             'relation':forms.Select(attrs={'class':'form-control','required':True,}),
-            'relation_from':forms.Select(attrs={'class':'form-control','required':True,}),
             'photo': forms.FileInput(attrs={'class':'form-control'}),
             }

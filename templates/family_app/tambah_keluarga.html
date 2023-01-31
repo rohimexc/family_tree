@@ -113,15 +113,13 @@
                     </div>
 
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">Email</label>
+                      <label for="" class="form-label">Email</label>
                       {{ form.email | as_crispy_field}}
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPhone" class="form-label">No HP</label>
                       {{ form.phone | as_crispy_field}}
-                      <div class="invalid-feedback">Please enter your phoneNumber</div>
                     </div>
                     <div class="col-12">
                       <label for="yourGender" class="form-label">Jenis Kelamin</label>
@@ -213,8 +211,12 @@
                       </div>
                       <div class="col">
                         <label for="yourRelationForm" class="form-label">Dari</label>
-                        {{ form.relation_from | as_crispy_field}}
-                        <div class="invalid-feedback">Please enter your Relation From</div>
+                          <select class="form-select" name='relation_from' id="relation_from" aria-label="Default select example">
+                            <option selected>Pilih Hubungan Dari</option>
+                            {% for a in optionfamily %}
+                            <option class="non" value="{{a.id}}">{{a.name}}</option>
+                            {% endfor %}
+                          </select>
                       </div>
                       
                     </div>
