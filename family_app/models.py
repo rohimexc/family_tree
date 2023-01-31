@@ -2,17 +2,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here. =
-class OptionFamily(models.Model):
-    idf = models.IntegerField(null=True)
-    name = models.CharField(max_length=50,null=True)
-    mid=models.IntegerField(null=True, blank=True)
-    fid=models.IntegerField(null=True, blank=True)
-    pids=models.IntegerField(null=True)
-    
 
-    def __str__(self):
-        return self.name
 
 class OptionCity(models.Model):
     city = models.CharField(max_length=50)

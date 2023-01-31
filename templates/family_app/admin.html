@@ -45,7 +45,7 @@
                       <i class="bi bi-person-hearts"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>12</h6>
+                      <h6>{{anak}}</h6>
                     
                     </div>
                   </div>
@@ -187,9 +187,9 @@
                 <div class="activity-item d-flex">
                   <div class="activite-label">
                     {% if a.sisahari == 0 %}
-                      Hari ini
+                      Hari ini <strong>{{a.born |date:"d/m/y"}}</strong>
                     {% else%}
-                      {{ a.sisahari }} Hari Lagi
+                      {{ a.sisahari }} Hari lagi, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
                     {% endif %}
                   </div>
                   <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
@@ -198,7 +198,7 @@
                   </div>
                 </div><!-- End activity item-->
                 {% endfor %}
-
+                
               </div>
 
             </div>

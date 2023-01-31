@@ -142,7 +142,7 @@
                       <div class="col">
                         <label for="yourCountry" class="form-label">Negara</label>
                         <select class="form-select" name='country' id="country" aria-label="Default select example">
-                          <option selected>Pilih Negara</option>
+                          <option selected disabled>Pilih Negara</option>
                           {% for a in country %}
                           <option class="non" value="{{a.country}}">{{a.country}}</option>
                           {% endfor %}
@@ -155,7 +155,7 @@
                       <div class="col">
                         <label for="yourCity" class="form-label">Kota</label>
                         <select class="form-select" id="city" name='city' aria-label="Default select example">
-                          <option selected>Pilih Kota</option>
+                          <option selected disabled>Pilih Kota</option>
                           {% for a in city %}
                           <option class="non" value="{{a.city}}">{{a.city}}</option>
                           {% endfor %}
@@ -211,8 +211,8 @@
                       </div>
                       <div class="col">
                         <label for="yourRelationForm" class="form-label">Dari</label>
-                          <select class="form-select" name='relation_from' id="relation_from" aria-label="Default select example">
-                            <option selected>Pilih Hubungan Dari</option>
+                          <select class="form-select" name='relation_from' id="relation_from" aria-label="Default select example" required>
+                            <option selected disabled>Pilih Hubungan Dari</option>
                             {% for a in optionfamily %}
                             <option class="non" value="{{a.id}}">{{a.name}}</option>
                             {% endfor %}

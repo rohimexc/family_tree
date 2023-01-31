@@ -10,7 +10,7 @@ from datetime import date
 import json
 from django.http import JsonResponse
 from django.utils import timezone
-import re
+from django.db.models import Q
 
 today = timezone.now().date()
 def index(request):
@@ -27,8 +27,7 @@ def index(request):
             nearest_birthday_diff = birthday_diff
         # Output the name of the nearest birthday
         if nearest_birthday:
-            person={'name' : nearest_birthday.name, 'sisahari':nearest_birthday_diff, 'born':nearest_birthday.born}
-            databirthday.append(person)
+            databirthday.append({'name' : nearest_birthday.name, 'sisahari':nearest_birthday_diff, 'born':nearest_birthday.born})
         else:
             databirthday=[]
             print("No birthdays in the current month.")
@@ -55,20 +54,30 @@ def login_request(request):
     return render(request,'family_app/login.html')
 
 def register(request):
+    optionfamily=Family.objects.all()
     if request.method == "POST":
         form = NewUserForm(request.POST)
+        idUser=request.POST.get('username')
+        newusername="huseinfamily@"+idUser
+        print(newusername)
         if form.is_valid():
-            user = form.save()
+            instance = form.save(commit=False)
+            instance.username=newusername
+            instance.save()
             messages.success(request, "Registration successful." )
             return redirect("akun")
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
-    context={'form':form}
+    context={'form':form, 'optionfamily':optionfamily}
     return render (request, 'family_app/register.html',context)
 
 @login_required(login_url='login')
 def admin(request):
     family_members=Family.objects.filter(born__month=today.month)
+    user=request.user
+    id_user=str(user).split('@')[1]
+    anak=Family.objects.filter(Q(mid=id_user) | Q(fid=id_user)).count()
+    print(anak)
     nearest_birthday = None
     nearest_birthday_diff = 999
     databirthday=[]
@@ -85,14 +94,18 @@ def admin(request):
         else:
             databirthday=[]
             print("No birthdays in the current month.")
-    family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born','death', 'country', 'city', 'phone','email'))
+    family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born','death', 'country', 'city', 'phone','email','photo'))
     new_list = [{k: v for k, v in d.items() if v is not None} for d in family]
     new_list = [{k: [v] if k == 'pids' else v for k, v in d.items()} for d in new_list]
+    for item in new_list:
+        if 'photo' in item:
+            item['photo'] = './media/' + item['photo']
+            
     for i in range(len(new_list)):
         for key, value in new_list[i].items():
             if isinstance(value, date):
                 new_list[i][key] = value.strftime('%Y-%m-%d')
-    context={'data': json.dumps(new_list), 'databirthday':databirthday}
+    context={'data': json.dumps(new_list), 'databirthday':databirthday, 'anak':anak}
     return render(request,'family_app/admin.html',context)
 
 @login_required(login_url='login')
@@ -173,6 +186,30 @@ def hapusKeluarga(request,id):
         family.delete()
         messages.success(request, 'Data berhasil dihapus')
     return redirect('database')
+
+@login_required(login_url='login')
+def editKeluarga(request,id):
+    ins_family=Family.objects.get(id=id)
+    citydb=OptionCity.objects.all()
+    countrydb=OptionCountry.objects.all()
+    optionfamily=Family.objects.all()
+    form = Familyform(instance=ins_family)
+    for row in OptionCity.objects.all().reverse():
+        if OptionCity.objects.filter(city=row.city).count() > 1:
+            row.delete()
+    for row in OptionCountry.objects.all().reverse():
+        if OptionCountry.objects.filter(country=row.country).count() > 1:
+            row.delete()
+    if request.method=='POST':
+        form=Familyform(request.POST,request.FILES,instance=ins_family)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Berhasil Update Data')
+            return redirect('database')
+        else:
+            messages.warning(request, "Pastikan Mengisi Semua data yang diminta")
+    context={'form':form,}
+    return render(request, 'family_app/edit_keluarga.html',context)
 
 @login_required(login_url='login')
 def akun(request):

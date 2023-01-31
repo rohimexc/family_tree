@@ -32,8 +32,7 @@
                                         <th>No. HP</th>
                                         <th>Gender</th>
                                         <th>Tgl. Lahir</th>
-                                        <th>Hubungan</th>
-                                        <th>Dari</th>
+                                        <th>Tgl. Wafat</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -45,8 +44,7 @@
                                         <th>No. HP</th>
                                         <th>Gender</th>
                                         <th>Tgl. Lahir</th>
-                                        <th>Hubungan</th>
-                                        <th>Dari</th>
+                                        <th>Tgl. Wafat</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
@@ -59,10 +57,9 @@
                                         <td>{{a.phone}}</td>
                                         <td>{{a.gender}}</td>
                                         <td>{{a.born}}</td>
-                                        <td>{{a.relation}}</td>
-                                        <td>{{a.relation_from}}</td>
+                                        <td>{{a.death}}</td>
                                         <td>
-                                            <a href="" type="button" class="btn btn-warning"><i class="bi bi-pen"></i></a>
+                                            <a href="{% url 'edit-keluarga' a.id %}" type="button" class="btn btn-warning"><i class="bi bi-pen"></i></a>
 
                                             <form method="POST" action="{% url 'hapus-keluarga' a.id %}" class="ml-2 mt-2">
                                                 {% csrf_token %}
