@@ -9,8 +9,35 @@ from .models import *
 from datetime import date
 import json
 from django.http import JsonResponse
+from django.utils import timezone
+today = timezone.now().date()
 def index(request):
-    return render(request,'family_app/index.html')
+    family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born', 'country', 'city', 'phone','email'))
+    family_members=Family.objects.filter(born__month=today.month)
+    nearest_birthday = None
+    nearest_birthday_diff = 999
+    databirthday=[]
+    for member in family_members:
+        # Get the difference between the member's birthday and today
+        birthday_diff = abs((member.born.replace(year=today.year) - today).days)
+        if birthday_diff < nearest_birthday_diff:
+            nearest_birthday = member
+            nearest_birthday_diff = birthday_diff
+        # Output the name of the nearest birthday
+        if nearest_birthday:
+            person={'name' : nearest_birthday.name, 'sisahari':nearest_birthday_diff, 'born':nearest_birthday.born}
+            databirthday.append(person)
+        else:
+            databirthday=[]
+            print("No birthdays in the current month.")
+    new_list = [{k: v for k, v in d.items() if v is not None} for d in family]
+    new_list = [{k: [v] if k == 'pids' else v for k, v in d.items()} for d in new_list]
+    for i in range(len(new_list)):
+        for key, value in new_list[i].items():
+            if isinstance(value, date):
+                new_list[i][key] = value.strftime('%Y-%m-%d')
+    context={'data': json.dumps(new_list), 'databirthday': databirthday}
+    return render(request,'family_app/index.html',context)
 
 def login_request(request):
     if request.method == "POST":
@@ -39,14 +66,31 @@ def register(request):
 
 @login_required(login_url='login')
 def admin(request):
-    family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born', 'country', 'city', 'phone','email'))
+    family_members=Family.objects.filter(born__month=today.month)
+    nearest_birthday = None
+    nearest_birthday_diff = 999
+    databirthday=[]
+    for member in family_members:
+        # Get the difference between the member's birthday and today
+        birthday_diff = abs((member.born.replace(year=today.year) - today).days)
+        if birthday_diff < nearest_birthday_diff:
+            nearest_birthday = member
+            nearest_birthday_diff = birthday_diff
+        # Output the name of the nearest birthday
+        if nearest_birthday:
+            person={'name' : nearest_birthday.name, 'sisahari':nearest_birthday_diff, 'born':nearest_birthday.born}
+            databirthday.append(person)
+        else:
+            databirthday=[]
+            print("No birthdays in the current month.")
+    family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born','death', 'country', 'city', 'phone','email'))
     new_list = [{k: v for k, v in d.items() if v is not None} for d in family]
     new_list = [{k: [v] if k == 'pids' else v for k, v in d.items()} for d in new_list]
     for i in range(len(new_list)):
         for key, value in new_list[i].items():
             if isinstance(value, date):
                 new_list[i][key] = value.strftime('%Y-%m-%d')
-    context={'data': json.dumps(new_list)}
+    context={'data': json.dumps(new_list), 'databirthday':databirthday}
     return render(request,'family_app/admin.html',context)
 
 @login_required(login_url='login')
@@ -67,7 +111,7 @@ def tambahKeluarga(request):
         if OptionCountry.objects.filter(country=row.country).count() > 1:
             row.delete()
     if request.method=='POST':
-        form=Familyform(request.POST)
+        form=Familyform(request.POST,request.FILES)
         if form.is_valid():
             city=request.POST.get('city')
             country=request.POST.get('country')
@@ -133,6 +177,14 @@ def tambahKeluarga(request):
             messages.warning(request, "Pastikan Mengisi Semua data yang diminta")
     context={'form':form, 'city':citydb, 'country':countrydb}
     return render(request, 'family_app/tambah_keluarga.html',context)
+
+@login_required(login_url='login')
+def hapusKeluarga(request,id):
+    family=Family.objects.get(id=id)
+    if request.method == "POST":
+        family.delete()
+        messages.success(request, 'Data berhasil dihapus')
+    return redirect('database')
 
 @login_required(login_url='login')
 def akun(request):

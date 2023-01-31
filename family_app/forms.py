@@ -45,17 +45,21 @@ class Familyform(ModelForm):
         self.fields['phone'].empty_label = '--'
         self.fields['email'].empty_label = '--'
         self.fields['born'].empty_label = '--'
+        self.fields['death'].empty_label = '--'
         self.fields['gender'].empty_label = 'Pilih Gender'
         self.fields['relation'].empty_label = 'Pilih Hubungan'
         self.fields['relation_from'].empty_label = 'Pilih Hubungan Dari'
+        self.fields['photo'].empty_label = '--'
     class Meta:
         model=Family
-        fields='name','phone','email','gender','born','relation','relation_from',
+        fields='name','phone','email','gender','born','death','relation','relation_from','photo'
         widgets={
             'name':forms.TextInput(attrs={'class':'form-control','required':True,}),
             'phone':forms.TextInput(attrs={'class':'form-control','required':True,}),
             'gender':forms.Select(attrs={'class':'form-control','required':True,}),
             'born':DateInput(attrs={'class':'form-control','required':True,}),
+            'death':DateInput(attrs={'class':'form-control'}),
             'relation':forms.Select(attrs={'class':'form-control','required':True,}),
             'relation_from':forms.Select(attrs={'class':'form-control','required':True,}),
+            'photo': forms.FileInput(attrs={'class':'form-control'}),
             }

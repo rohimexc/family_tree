@@ -103,7 +103,7 @@
                     <h5 class="card-title text-center pb-0 fs-4">Tambah Keluarga</h5>
                   </div>
 
-                  <form method="POST" class="row g-3 needs-validation"  action="">
+                  <form method="POST" class="row g-3"  action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     <div class="col-12">
@@ -123,21 +123,23 @@
                       {{ form.phone | as_crispy_field}}
                       <div class="invalid-feedback">Please enter your phoneNumber</div>
                     </div>
+                    <div class="col-12">
+                      <label for="yourGender" class="form-label">Jenis Kelamin</label>
+                      {{ form.gender | as_crispy_field}}
+                      <div class="invalid-feedback">Please enter your gender</div>
+                    </div>
                     <div class="row mt-3">
-                      <div class="col">
+                      <div class="col-6">
                         <label for="yourBorn" class="form-label">Tgl Lahir</label>
                         {{ form.born | as_crispy_field}}
                         <div class="invalid-feedback">Please enter your dateBirth</div>
                       </div>
-  
-                      <div class="col">
-                        <label for="yourGender" class="form-label">Jenis Kelamin</label>
-                        {{ form.gender | as_crispy_field}}
-                        <div class="invalid-feedback">Please enter your gender</div>
+                      <div class="col-6">
+                        <label for="yourDeath" class="form-label">Tgl Wafat</label>
+                        {{ form.death | as_crispy_field}}
+                        
                       </div>
-
                     </div>
-                   
                     <div class="row mt-3">
                       <div class="col">
                         <label for="yourCountry" class="form-label">Negara</label>
@@ -149,7 +151,7 @@
                           <option class="ceditable" value="other" >Lainnya</option>
                         </select>
                         <input class="ceditOption" style="display:none;"></input>
-                        <div class="invalid-feedback">Please enter your Country</div>
+                        
                       </div>
   
                       <div class="col">
@@ -162,7 +164,6 @@
                           <option class="editable" value="other" >Lainnya</option>
                         </select>
                         <input class="editOption" style="display:none;"></input>
-                        <div class="invalid-feedback">Please enter your City</div>
                       </div>
                       <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
                       <script>
@@ -215,6 +216,11 @@
                         {{ form.relation_from | as_crispy_field}}
                         <div class="invalid-feedback">Please enter your Relation From</div>
                       </div>
+                      
+                    </div>
+                    <div class="col-12">
+                      <label for="yourPhotoForm" class="form-label">Photo</label>
+                      {{ form.photo | as_crispy_field}}
                     </div>
 
                     <div class="col-12">

@@ -97,14 +97,7 @@
                         <a target='_blank' href="https://wa.me/+6287776481050">Lupa Password</a>
                       </p>
                     </div>
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div {% if message.tags %} class="alert alert-{{message.tags}} bg-{{message.tags}} text-light border-0 alert-dismissible fade show" {% endif %} role="alert">
-                      {{ message }}
-                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>                    
-                    {% endfor %}
-                    {% endif %}
+                    
                     <!-- <div class="col-12">
                       <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
                     </div> -->
@@ -123,7 +116,64 @@
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script>
+    {% for msg in messages %}
+      {% if msg.tags == "success" %}
+      Swal.fire({
+        
+        icon: 'success',
+        title: 'Sukses',
+        text: '{{ msg }}',
+        timer: 1700,
+        showConfirmButton: false,
+      });
+      {% elif msg.tags == 'warning' %}
+      Swal.fire({
+        
+        icon: 'warning',
+        title: 'Warning',
+        text: '{{ msg }}',
+        timer: 2500,
+        showConfirmButton: false,
+      });
+      {% elif msg.tags == 'error' %}
+      Swal.fire({
+        
+        icon: 'error',
+        title: 'Error',
+        text: '{{ msg }}',
+        timer: 2500,
+        showConfirmButton: false,
+      });
+      {% endif %}
 
+    {% endfor %}
+  </script>
+  <script type="text/javascript">
+    $('.show_confirm').click(function(event) {
+      var form = $(this).closest("form");
+      var name = $(this).data("name");
+      event.preventDefault();
+      swal.fire({
+        title: "HAPUS Data?",
+        text: "Yakin Data Akan Dihapus.",
+        icon: "warning",
+        // buttons: true,
+        dangerMode: true,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Hapus'
+      })
+      .then((willDelete) => {
+        if (willDelete.isConfirmed) {
+          form.submit();
+          Swal.fire('Sukses','Data Terhapus.','success');
+          // return redirect('tambah-tahun');
+        }
+      });
+    });
+  </script>
   <!-- vendor_2 JS Files -->
   <script src="{% static 'vendor_2/apexcharts/apexcharts.min.js' %}"></script>
   <script src="{% static 'vendor_2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -136,6 +186,7 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'js_2/main.js' %}"></script>
+  
 
 
 </body>

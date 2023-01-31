@@ -34,6 +34,7 @@
                                         <th>Tgl. Lahir</th>
                                         <th>Hubungan</th>
                                         <th>Dari</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -46,12 +47,13 @@
                                         <th>Tgl. Lahir</th>
                                         <th>Hubungan</th>
                                         <th>Dari</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
                                     {% for a in family %}
                                     <tr>
-                                        <td>{{forloop.counter}}</td>
+                                        <td>{{forloop.counter}} - {{a.id}}</td>
                                         <td>{{a.name}}</td>
                                         <td>{{a.email}}</td>
                                         <td>{{a.phone}}</td>
@@ -59,6 +61,16 @@
                                         <td>{{a.born}}</td>
                                         <td>{{a.relation}}</td>
                                         <td>{{a.relation_from}}</td>
+                                        <td>
+                                            <a href="" type="button" class="btn btn-warning"><i class="bi bi-pen"></i></a>
+
+                                            <form method="POST" action="{% url 'hapus-keluarga' a.id %}" class="ml-2 mt-2">
+                                                {% csrf_token %}
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit" class="btn btn-danger show_confirm"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                                
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

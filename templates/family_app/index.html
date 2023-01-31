@@ -149,7 +149,10 @@
             <div class="pricing-item featured">
               <div id="tree" class="pricing-body d-flex justify-content-center">
               </div>
-              <script src="{% static 'family.js' %}"></script> 
+              <script src="{% static 'family.js' %}"></script>
+              <script>
+                var data = JSON.parse('{{data | safe}}')
+              </script>  
               <script src="{% static 'user.js' %}"></script>
               <div class="text-center">
                 <a href="#" class="buy-btn">Print</a>
@@ -172,7 +175,7 @@
 
         <div class="d-flex flex-column align-items-center align-items-lg-start">
           <div class="copyright">
-            &copy; Copyright <strong><span>Rohim Exc</span></strong>. 2023
+            &copy; Copyright from <strong><span>Husain Only</span></strong> 2023
           </div>
         </div>
         <div class="social-links order-first order-lg-last mb-3 mb-lg-0">

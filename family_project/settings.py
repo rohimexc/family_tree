@@ -123,6 +123,8 @@ STATICFILES_DIRS=[
     BASE_DIR / "static",
     '/var/www/static',
 ]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 
 
 # Default primary key field type
