@@ -1,3 +1,8 @@
+function pdf(nodeId) {
+    family.exportPDF({
+         format: "A4"
+    });
+ }
 
 var family = new FamilyTree(document.getElementById('tree'), {
     mouseScrool: FamilyTree.action.scroll,
@@ -42,5 +47,8 @@ family.on('field', function (sender, args) {
     }
 });
 
-
+button.addEventListener("click", function() {
+    alert("Proses Penyimpanan");
+    pdf();
+  });
 family.load(data)

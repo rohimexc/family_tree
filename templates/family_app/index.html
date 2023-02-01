@@ -61,7 +61,6 @@
       <nav id="navbar" class="navbar">
         <i class="bi bi-list mobile-nav-toggle d-none"></i>
       </nav><!-- .navbar -->
-
       <a class="btn-getstarted scrollto mr-3" href="{% url 'login' %}">Login</a>
 
     </div>
@@ -74,7 +73,30 @@
       <p>Temukan Silsilah Keluargamu dan Hari Ulang Tahun Mereka dengan Sekali Sentuhan</p>
       <div class="d-flex">
         <a href="#family" class="btn-get-started scrollto">Mulai</a>
-        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+        <!-- <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-bell"></i><span>Lihat Ultah Bulan ini</span></a> -->
+        <a id="ultah" class="btn-watch-video d-flex align-items-center border-0" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-bell"></i><span>Lihat Ultah Bulan ini</span></a>
+        <div class="pricing-item featured dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="pricing-header">
+            <h3 class="text-primary text-center mt-auto">Ulang Tahun Bulan ini</h3>
+        </div>
+        <ul class="justify-content-around px-3">
+          {% for a in databirthday %}
+            <div class="activity-item d-flex">
+              <div class="activite-label">
+                {% if a.sisahari == 0 %}
+                  Hari ini <strong>{{a.born |date:"d/m/y"}}</strong>
+                {% else%}
+                  {{ a.sisahari }} Hari lagi, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
+                {% endif %}
+              </div>
+              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+              <div class="activity-content text-center">
+                <strong>{{a.name}}</strong>
+              </div>
+            </div>
+          {% endfor %}
+        </ul>
+      </div>
       </div>
     </div>
   </section>
@@ -84,12 +106,11 @@
       <div class="container pt-4">
 
         <div class="row gy-4">
-
           <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate m-0" data-aos="zoom-out">
             <div class="service-item position-relative">
               <div class="d-flex justify-content-between">
                 <div class="icon"><i class="bi bi-person-heart"></i></div>
-                <h1>10</h1>
+                <h1>{{anak}}</h1>
               </div>
               <h4><a href="" class="stretched-link">Jumlah Anak</a></h4>
             </div>
@@ -99,7 +120,7 @@
             <div class="service-item position-relative">
               <div class="d-flex justify-content-between">
                 <div class="icon"><i class="bi bi-person-hearts"></i></div>
-                <h1>10</h1>
+                <h1>{{cucu}}</h1>
               </div>
               <h4><a href="" class="stretched-link">Jumlah Cucu</a></h4>
             </div>
@@ -109,7 +130,7 @@
             <div class="service-item position-relative">
               <div class="d-flex justify-content-between">
                 <div class="icon"><i class="bi bi-person-fill-down"></i></div>
-                <h1>10</h1>
+                <h1>{{cicit}}</h1>
               </div>
               <h4><a href="" class="stretched-link">Jumlah Cicit</a></h4>
             </div>
@@ -119,7 +140,7 @@
             <div class="service-item position-relative">
               <div class="d-flex justify-content-between">
                 <div class="icon"><i class="bi bi-person-lines-fill"></i></div>
-                <h1>10</h1>
+                <h1>{{piut}}</h1>
               </div>
               <h4><a href="" class="stretched-link">Jumlah Piut</a></h4>
             </div>
@@ -149,14 +170,15 @@
             <div class="pricing-item featured">
               <div id="tree" class="pricing-body d-flex justify-content-center">
               </div>
+              <div class="text-center">
+                <button id="print" class="buy-btn">Print</button>
+              </div>
               <script src="{% static 'family.js' %}"></script>
               <script>
-                var data = JSON.parse('{{data | safe}}')
+                var data = JSON.parse('{{data | safe}}');
+                const button = document.getElementById("print");
               </script>  
               <script src="{% static 'user.js' %}"></script>
-              <div class="text-center">
-                <a href="#" class="buy-btn">Print</a>
-              </div>
             </div>
           </div><!-- End Pricing Item -->
         </div>

@@ -79,7 +79,7 @@
                       <i class="bi bi-person-fill-down"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>10</h6>
+                      <h6>{{cucu}}</h6>
                       
                     </div>
                   </div>
@@ -114,7 +114,7 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1244</h6>
+                      <h6>{{cicit}}</h6>
                       
                     </div>
                   </div>
@@ -147,9 +147,13 @@
                   <!-- Line Chart -->
                   <div id="tree" class="pricing-body d-flex justify-content-center">
                   </div>
+                  <div class="text-center">
+                    <button id="print" class="btn btn-primary">Print <i class="bi bi-printer"></i></button>
+                  </div>
                   <script src="{% static 'family_admin.js' %}"></script>
                   <script>
                     var data = JSON.parse('{{data | safe}}')
+                    const button = document.getElementById("print");
                   </script> 
                   <script src="{% static 'main.js' %}"></script>
                   

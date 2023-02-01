@@ -76,6 +76,11 @@ function importCSVHandler(){
     family.importCSV();
 }
 
+button.addEventListener("click", function() {
+    alert("Proses Penyimpanan");
+    pdf();
+  });
 // var data = JSON.parse('{{ data|safe }}');
 family.load(data)
+
               
