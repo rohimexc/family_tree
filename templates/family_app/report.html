@@ -1,0 +1,151 @@
+{% extends './navbar.html' %}
+{% load static %}
+{% block content %}
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Report</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'cb-admin' %}">Home</a></li>
+          <li class="breadcrumb-item active">Database Keluarga</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <div class="card-body mt-3">
+                        <div class="input-group">
+                            <form method="POST" class="d-flex" action="">
+                            {% csrf_token %}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Tingkat</span>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <select class="form-select" name='tingkat' aria-label="Default select example">
+                                        <option selected disabled>Pilih Tingkat</option>
+                                        <option class="non" value="anak">Anak</option>
+                                        <option class="non" value="cucu">Cucu</option>
+                                        <option class="non" value="cicit">Cicit</option>
+                                    </select>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">Keluarga</span>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <select class="form-select" name='keluarga' aria-label="Default select example">
+                                        <option selected disabled>Pilih Keluarga</option>
+                                        {% for a in family %}
+                                        <option class="non" value="{{a.id}}">{{a.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">Jenis Kelamin</span>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <select class="form-select" name='gender' aria-label="Default select example">
+                                        <option selected disabled>Pilih Jenis Kelamin</option>
+                                        <option class="non" value="male">Laki-laki</option>
+                                        <option class="non" value="female">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-block" type="submit"><i class="bi bi-send-fill fs-6"></i> Proses</button>
+                                </div>
+                                <div class="input-group-append">
+                                    <a href="" class="btn btn-warning btn-block"><i class="bi bi-arrow-clockwise fs-6"></i> Kembali</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">Database</h5>
+                            <a href="{% url 'tambah-keluarga' %}" type="button" class="btn btn-primary"><i class="bi bi-arrow-down-circle"></i> Download</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Email</th>
+                                        <th>No. HP</th>
+                                        <th>Gender</th>
+                                        <th>Tgl. Lahir</th>
+                                        <th>Tgl. Wafat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Email</th>
+                                        <th>No. HP</th>
+                                        <th>Gender</th>
+                                        <th>Tgl. Lahir</th>
+                                        <th>Tgl. Wafat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% for a in family %}
+                                    <tr>
+                                        <td>{{forloop.counter}} - {{a.id}}</td>
+                                        <td>{{a.name}}</td>
+                                        <td>{{a.email}}</td>
+                                        <td>{{a.phone}}</td>
+                                        <td>{{a.gender}}</td>
+                                        <td>{{a.born}}</td>
+                                        <td>{{a.death}}</td>
+                                        <td>
+                                            <a href="{% url 'edit-keluarga' a.id %}" type="button" class="btn btn-warning"><i class="bi bi-pen"></i></a>
+
+                                            <form method="POST" action="{% url 'hapus-keluarga' a.id %}" class="ml-2 mt-2">
+                                                {% csrf_token %}
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit" class="btn btn-danger show_confirm"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                                
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main><!-- End #main -->
+  <script src="{% static 'vendor_3/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor_3/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor_3/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor_3/chart.js/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+  <script src="{% static 'vendor_3/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor_3/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js_3/demo/datatables-demo.js' %}"></script>
+{% endblock content %}

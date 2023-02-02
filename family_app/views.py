@@ -301,6 +301,70 @@ def editKeluarga(request,id):
     return render(request, 'family_app/edit_keluarga.html',context)
 
 @login_required(login_url='login')
+def report(request):
+    family=Family.objects.all()
+    user=request.user
+    if "@" in str(user):
+        id_user=str(user).split('@')[1]
+    else:
+        id_user=17
+    def anak(id_user=id_user,jk=['male','female']):
+        family=Family.objects.filter(Q(mid=id_user)|Q(fid=id_user)).filter(gender__in=jk)
+        return family
+    def cucu(id_user=id_user,jk=['male','female']):
+        anak=Family.objects.filter(Q(mid=id_user)|Q(fid=id_user)).filter(gender__in=jk)
+        idcucu=[]
+        for a in anak:
+            idcucu.append(a.id)
+        family=Family.objects.filter(Q(mid__in=idcucu)|Q(fid__in=idcucu)).filter(gender__in=jk)
+        return family
+    tingkat=request.POST.get('tingkat')
+    keluarga=request.POST.get('keluarga')
+    gender=[request.POST.get('gender')]
+    if tingkat=='anak':
+        anak()
+        if keluarga:
+            family=anak(keluarga)
+            if gender:
+                family=anak(keluarga,gender)
+            else:
+                family=anak(keluarga)
+        else:
+            family=anak(id_user)
+            if gender:
+                family=anak(id_user,gender)
+            else:
+                family=anak(id_user)  
+        if gender:
+            family=anak(id_user,gender)
+        else:
+            family=anak(id_user)
+    elif tingkat=='cucu':
+        family=cucu()
+        if keluarga:
+            family=cucu(keluarga)
+            if gender:
+                family=cucu(keluarga,gender)
+            else:
+                family=cucu(keluarga)
+        else:
+            family=cucu(id_user)
+            if gender:
+                family=cucu(id_user,gender)
+            else:
+                family=cucu(id_user)
+                
+        if gender:
+            family=cucu(id_user,gender)
+        else:
+            family=cucu(id_user)
+    else:
+        messages.error(request,'hadeh')
+        
+    context={'family':family}
+    return render(request,'family_app/report.html',context)
+
+@login_required(login_url='login')
 def akun(request):
     user=User.objects.all()
     context={'user':user}
