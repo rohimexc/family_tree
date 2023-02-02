@@ -6,7 +6,9 @@ function pdf(nodeId) {
 console.log(data)
 var family = new FamilyTree(document.getElementById('tree'), {
     mouseScrool: FamilyTree.action.scroll,
-    miniMap: true,
+    showYScroll: FamilyTree.scroll.visible,
+    showXScroll: FamilyTree.scroll.visible,
+    scaleInitial: FamilyTree.match.boundary,
     menu: {
         export_pdf: {
             text: "Export PDF",
@@ -82,5 +84,9 @@ button.addEventListener("click", function() {
   });
 // var data = JSON.parse('{{ data|safe }}');
 family.load(data)
-
-              
+FamilyTree.scroll.safari = {smooth: 12,speed: 500};
+FamilyTree.scroll.ie = { smooth: 12, speed: 200 };
+FamilyTree.scroll.edge = { smooth: 12, speed: 200 };
+FamilyTree.scroll.chrome = { smooth: 12, speed: 200 };
+FamilyTree.scroll.firefox = { smooth: 12, speed: 200 };
+FamilyTree.scroll.opera = { smooth: 12, speed: 200 };
