@@ -308,59 +308,54 @@ def report(request):
         id_user=str(user).split('@')[1]
     else:
         id_user=17
-    def anak(id_user=id_user,jk=['male','female']):
-        family=Family.objects.filter(Q(mid=id_user)|Q(fid=id_user)).filter(gender__in=jk)
+    def anak(ids=id_user,jk=['male','female']):
+        family=Family.objects.filter(Q(mid=ids)|Q(fid=ids)).filter(gender__in=jk)
         return family
-    def cucu(id_user=id_user,jk=['male','female']):
-        anak=Family.objects.filter(Q(mid=id_user)|Q(fid=id_user)).filter(gender__in=jk)
+    def cucu(ids=id_user,jk=['male','female']):
+        anak=Family.objects.filter(Q(mid=ids)|Q(fid=ids)).filter(gender__in=jk)
         idcucu=[]
         for a in anak:
             idcucu.append(a.id)
         family=Family.objects.filter(Q(mid__in=idcucu)|Q(fid__in=idcucu)).filter(gender__in=jk)
         return family
+    def cicit(ids=id_user,jk=['male','female']):
+        anak=Family.objects.filter(Q(mid=ids)|Q(fid=ids)).filter(gender__in=jk)
+        idcucu=[]
+        idcicit=[]
+        for a in anak:
+            idcucu.append(a.id)
+        cucu=Family.objects.filter(Q(mid__in=idcucu)|Q(fid__in=idcucu)).filter(gender__in=jk)
+        for a in cucu:
+            idcicit.append(a.id)
+        family=Family.objects.filter(Q(mid__in=idcicit)|Q(fid__in=idcicit)).filter(gender__in=jk)
+        return family
     tingkat=request.POST.get('tingkat')
     keluarga=request.POST.get('keluarga')
-    gender=[request.POST.get('gender')]
+    jk=[request.POST.get('gender')]
+    print(tingkat,keluarga,jk)
+    
     if tingkat=='anak':
-        anak()
-        if keluarga:
+        family=anak()
+        if keluarga != None:
             family=anak(keluarga)
-            if gender:
-                family=anak(keluarga,gender)
-            else:
-                family=anak(keluarga)
-        else:
-            family=anak(id_user)
-            if gender:
-                family=anak(id_user,gender)
-            else:
-                family=anak(id_user)  
-        if gender:
-            family=anak(id_user,gender)
-        else:
-            family=anak(id_user)
+            if jk != None:
+                family=anak(keluarga,jk) 
+         
     elif tingkat=='cucu':
         family=cucu()
-        if keluarga:
+        if keluarga != None:
             family=cucu(keluarga)
-            if gender:
-                family=cucu(keluarga,gender)
-            else:
-                family=cucu(keluarga)
-        else:
-            family=cucu(id_user)
-            if gender:
-                family=cucu(id_user,gender)
-            else:
-                family=cucu(id_user)
-                
-        if gender:
-            family=cucu(id_user,gender)
-        else:
-            family=cucu(id_user)
+            if jk != None:
+                family=cucu(keluarga,jk)
+    elif tingkat=='cicit':
+        family=cicit()
+        if keluarga != None:
+            family=cicit(keluarga)
+            if jk != None:
+                family=cicit(keluarga,jk)
     else:
-        messages.error(request,'hadeh')
-        
+        messages.info(request,'Pilih untuk menfilter')
+
     context={'family':family}
     return render(request,'family_app/report.html',context)
 

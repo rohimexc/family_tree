@@ -19,21 +19,15 @@
                 <div class="card shadow mb-4">
                     <div class="card-body mt-3">
                         <div class="input-group">
-                            <form method="POST" class="d-flex" action="">
+                            <form method="POST" class="col-xxl-12 col-md-12 col-12" action="">
                             {% csrf_token %}
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Tingkat</span>
-                                </div>
-                                <div class="input-group-prepend">
-                                    <select class="form-select" name='tingkat' aria-label="Default select example">
+                                    <select class="form-select" name='tingkat' aria-label="Default select example" required>
                                         <option selected disabled>Pilih Tingkat</option>
                                         <option class="non" value="anak">Anak</option>
                                         <option class="non" value="cucu">Cucu</option>
                                         <option class="non" value="cicit">Cicit</option>
                                     </select>
-                                </div>
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="">Keluarga</span>
                                 </div>
                                 <div class="input-group-prepend">
                                     <select class="form-select" name='keluarga' aria-label="Default select example">
@@ -43,22 +37,16 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="">Jenis Kelamin</span>
-                                </div>
-                                <div class="input-group-prepend">
+                                <div class="input-group-prepend mb-2">
                                     <select class="form-select" name='gender' aria-label="Default select example">
                                         <option selected disabled>Pilih Jenis Kelamin</option>
                                         <option class="non" value="male">Laki-laki</option>
                                         <option class="non" value="female">Perempuan</option>
                                     </select>
                                 </div>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary btn-block" type="submit"><i class="bi bi-send-fill fs-6"></i> Proses</button>
-                                </div>
-                                <div class="input-group-append">
-                                    <a href="" class="btn btn-warning btn-block"><i class="bi bi-arrow-clockwise fs-6"></i> Kembali</a>
-                                </div>
+
+                                <button class="btn btn-block btn-primary" type="submit"><i class="bi bi-send-fill fs-6"></i> Proses</button>
+                                <a href="" class="btn btn-block btn-warning"><i class="bi bi-arrow-clockwise fs-6"></i> Kembali</a>
                             </form>
                         </div>
                     </div>
@@ -82,7 +70,6 @@
                                         <th>Gender</th>
                                         <th>Tgl. Lahir</th>
                                         <th>Tgl. Wafat</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -94,7 +81,6 @@
                                         <th>Gender</th>
                                         <th>Tgl. Lahir</th>
                                         <th>Tgl. Wafat</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -107,16 +93,7 @@
                                         <td>{{a.gender}}</td>
                                         <td>{{a.born}}</td>
                                         <td>{{a.death}}</td>
-                                        <td>
-                                            <a href="{% url 'edit-keluarga' a.id %}" type="button" class="btn btn-warning"><i class="bi bi-pen"></i></a>
-
-                                            <form method="POST" action="{% url 'hapus-keluarga' a.id %}" class="ml-2 mt-2">
-                                                {% csrf_token %}
-                                                <input name="_method" type="hidden" value="DELETE">
-                                                <button type="submit" class="btn btn-danger show_confirm"><i class="bi bi-trash"></i></button>
-                                            </form>
-                                                
-                                        </td>
+                                        
                                     </tr>
                                     {% endfor %}
                                 </tbody>
