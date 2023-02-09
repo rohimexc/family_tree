@@ -22,7 +22,7 @@
                             <form method="POST" class="col-xxl-12 col-md-12 col-12" action="">
                             {% csrf_token %}
                                 <div class="input-group-prepend">
-                                    <select class="form-select" name='tingkat' aria-label="Default select example" required>
+                                    <select class="form-select" id="tingkat" name='tingkat' aria-label="Default select example" required>
                                         <option selected disabled>Pilih Tingkat</option>
                                         <option class="non" value="anak">Anak</option>
                                         <option class="non" value="cucu">Cucu</option>
@@ -30,7 +30,7 @@
                                     </select>
                                 </div>
                                 <div class="input-group-prepend">
-                                    <select class="form-select" name='keluarga' aria-label="Default select example">
+                                    <select class="form-select" id="keluarga"  style="display: none;" name='keluarga' aria-label="Default select example">
                                         <option selected disabled>Pilih Keluarga</option>
                                         {% for a in family %}
                                         <option class="non" value="{{a.id}}">{{a.name}}</option>
@@ -38,7 +38,7 @@
                                     </select>
                                 </div>
                                 <div class="input-group-prepend mb-2">
-                                    <select class="form-select" name='gender' aria-label="Default select example">
+                                    <select class="form-select" id="jk"  style="display: none;" name='gender' aria-label="Default select example">
                                         <option selected disabled>Pilih Jenis Kelamin</option>
                                         <option class="non" value="male">Laki-laki</option>
                                         <option class="non" value="female">Perempuan</option>
@@ -51,13 +51,36 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    const primaryDropdown = document.querySelector('#tingkat');
+                    const secondaryDropdown = document.querySelector('#keluarga');
+                    const thirdtyDropdown = document.querySelector('#jk');
+
+                    primaryDropdown.addEventListener('change', function() {
+                    if (this.value) {
+                        secondaryDropdown.style.display = 'block';
+                    } else {
+                        secondaryDropdown.style.display = 'none';
+                    }
+                    });
+
+                    secondaryDropdown.addEventListener('change', function() {
+                    if (this.value) {
+                        thirdtyDropdown.style.display = 'block';
+                    } else {
+                        thirdtyDropdown.style.display = 'none';
+                    }
+                    });
+                </script>
+                
                 
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title">Database</h5>
-                            <a href="{% url 'tambah-keluarga' %}" type="button" class="btn btn-primary"><i class="bi bi-arrow-down-circle"></i> Download</a>
+                            <a id="download-link" href="#" style="display:none;">Download Tabel</a>
+                            <button  class="btn btn-primary" onclick="downloadExcel()"><i class="bi bi-arrow-down-circle"></i> Download</button>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -69,30 +92,30 @@
                                         <th>No. HP</th>
                                         <th>Gender</th>
                                         <th>Tgl. Lahir</th>
+                                        <th>Negara</th>
+                                        <th>Kota</th>
                                         <th>Tgl. Wafat</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Nama Lengkap</th>
-                                        <th>Email</th>
-                                        <th>No. HP</th>
-                                        <th>Gender</th>
-                                        <th>Tgl. Lahir</th>
-                                        <th>Tgl. Wafat</th>
-                                    </tr>
-                                </tfoot>
+                                
                                 <tbody>
                                     {% for a in family %}
                                     <tr>
                                         <td>{{forloop.counter}} - {{a.id}}</td>
                                         <td>{{a.name}}</td>
-                                        <td>{{a.email}}</td>
-                                        <td>{{a.phone}}</td>
-                                        <td>{{a.gender}}</td>
+                                        <td>{{a.email |default:''}}</td>
+                                        <td>{{a.phone |default:''}}</td>
+                                        <td>
+                                            {% if a.gender == 'male' %}
+                                                Laki-laki
+                                            {% else %}
+                                                Perempuan
+                                            {% endif %}
+                                        </td>
                                         <td>{{a.born}}</td>
-                                        <td>{{a.death}}</td>
+                                        <td>{{a.country |default:''}}</td>
+                                        <td>{{a.city |default:''}}</td>
+                                        <td>{{a.death |default:''}}</td>
                                         
                                     </tr>
                                     {% endfor %}
@@ -105,6 +128,25 @@
         </div>
     </section>
   </main><!-- End #main -->
+  <script src="https://unpkg.com/xlsx@0.16.6/dist/xlsx.full.min.js"></script>
+    <script>
+        function downloadExcel() {
+            /* Konversi tabel HTML ke Workbook */
+            var table = document.getElementById("dataTable");
+            var wb = XLSX.utils.table_to_book(table);
+            /* Ubah Workbook menjadi Blob */
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            var blob = new Blob([wbout], { type: "application/octet-stream" });
+            /* Update tautan download */
+            var link = document.getElementById("download-link");
+            link.href = URL.createObjectURL(blob);
+            link.download = "husainfamily.xlsx";
+            
+            /* Unduh file */
+            link.click();
+        }
+    </script>
+
   <script src="{% static 'vendor_3/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor_3/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 

@@ -107,14 +107,14 @@
         </a>
 
       </li><!-- End Tables Nav -->
-
+      {% if request.user.is_superuser %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'akun' %}">
           <i class="bi bi-card-list"></i>
           <span>Akun</span>
         </a>
       </li><!-- End Register Page Nav -->
-
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'report' %}">
           <i class="bi bi-journal-text"></i>

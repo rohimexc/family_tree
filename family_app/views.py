@@ -2,6 +2,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate #add this
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .forms import *
@@ -104,6 +105,7 @@ def login_request(request):
             messages.error(request,"Invalid username or password.")
     return render(request,'family_app/login.html')
 
+@user_passes_test(lambda u: u.is_superuser)
 def register(request):
     optionfamily=Family.objects.all()
     if request.method == "POST":
@@ -140,32 +142,39 @@ def admin(request):
     idanak=[]
     idcucu=[]
     idcicit=[]
+    idpiut=[]
     
     dataanak=Family.objects.filter(Q(mid=id_user) | Q(fid=id_user))
     for a in dataanak:
         idanak.append(a.id)
+    menantu_anak=Family.objects.filter(Q(pids__in=idanak)).count()
     for a in idanak:
         dc=Family.objects.filter(Q(mid=a) | Q(fid=a))
         for b in dc:
             if b != []:
                 datacucu.append(b)
                 idcucu.append(b.id)
+    menantu_cucu=Family.objects.filter(Q(pids__in=idcucu)).count()
     for b in idcucu:
         dc=Family.objects.filter(Q(mid=b) | Q(fid=b))
         for c in dc:
             if c != []:
                 datacicit.append(c)
                 idcicit.append(c.id)
+    menantu_cicit=Family.objects.filter(Q(pids__in=idcicit)).count()
     for d in idcicit:
         dc=Family.objects.filter(Q(mid=d) | Q(fid=d))
         for f in dc:
             if f != []:
                 datapiut.append(f)
+                idpiut.append(f.id)
+    menantu_piut=Family.objects.filter(Q(pids__in=idpiut)).count()
 
     anak=dataanak.count()
-    cucu=len(datacucu)
-    cicit=len(datacicit)
-    piut=len(datapiut)
+    anak=anak+menantu_anak
+    cucu=len(datacucu)+menantu_cucu
+    cicit=len(datacicit)+menantu_cicit
+    piut=len(datapiut)+menantu_piut
     nearest_birthday = None
     nearest_birthday_diff = 999
     databirthday=[]
@@ -329,32 +338,36 @@ def report(request):
             idcicit.append(a.id)
         family=Family.objects.filter(Q(mid__in=idcicit)|Q(fid__in=idcicit)).filter(gender__in=jk)
         return family
-    tingkat=request.POST.get('tingkat')
-    keluarga=request.POST.get('keluarga')
-    jk=[request.POST.get('gender')]
-    print(tingkat,keluarga,jk)
-    
-    if tingkat=='anak':
-        family=anak()
-        if keluarga != None:
-            family=anak(keluarga)
-            if jk != None:
-                family=anak(keluarga,jk) 
-         
-    elif tingkat=='cucu':
-        family=cucu()
-        if keluarga != None:
-            family=cucu(keluarga)
-            if jk != None:
-                family=cucu(keluarga,jk)
-    elif tingkat=='cicit':
-        family=cicit()
-        if keluarga != None:
-            family=cicit(keluarga)
-            if jk != None:
-                family=cicit(keluarga,jk)
+    tingkat = request.POST.get('tingkat')
+    keluarga = request.POST.get('keluarga')
+    jk = request.POST.get('gender')
+
+    if tingkat == 'anak':
+        if keluarga:
+            if jk:
+                family = anak(keluarga, [jk])
+            else:
+                family = anak(keluarga)
+        else:
+            family = anak()
+    elif tingkat == 'cucu':
+        if keluarga:
+            if jk:
+                family = cucu(keluarga, [jk])
+            else:
+                family = cucu(keluarga)
+        else:
+            family = cucu()
+    elif tingkat == 'cicit':
+        if keluarga:
+            if jk:
+                family = cicit(keluarga, [jk])
+            else:
+                family = cicit(keluarga)
+        else:
+            family = cicit()
     else:
-        messages.info(request,'Pilih untuk menfilter')
+        messages.info(request, 'Pilih untuk menfilter')
 
     context={'family':family}
     return render(request,'family_app/report.html',context)
