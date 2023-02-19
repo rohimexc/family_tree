@@ -1,5 +1,7 @@
 {% extends './navbar.html' %}
 {% load static %}
+{% load my_template_filters %}
+
 {% block content %}
   <main id="main" class="main">
 
@@ -147,15 +149,18 @@
                   <!-- Line Chart -->
                   <div id="tree" class="pricing-body d-flex justify-content-center">
                   </div>
+                  
                   <div class="text-center">
                     <button id="print" class="btn btn-primary">Print <i class="bi bi-printer"></i></button>
                   </div>
                   <script src="{% static 'family_admin.js' %}"></script>
+
                   <script>
                     var data = JSON.parse('{{data | safe}}')
                     const button = document.getElementById("print");
                   </script> 
                   <script src="{% static 'main.js' %}"></script>
+
                   
                 </div>
                 
@@ -192,6 +197,8 @@
                   <div class="activite-label">
                     {% if a.sisahari == 0 %}
                       Hari ini <strong>{{a.born |date:"d/m/y"}}</strong>
+                    {% elif a.sisahari < 0 %}
+                      {{ a.sisahari|remove_negative }} Hari yang lalu, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
                     {% else%}
                       {{ a.sisahari }} Hari lagi, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
                     {% endif %}
@@ -215,4 +222,5 @@
     </section>
 
   </main><!-- End #main -->
+
 {% endblock content %}

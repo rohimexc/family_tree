@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(OptionCountry)
 admin.site.register(OptionCity)
 admin.site.register(Family)
+admin.site.register(Profile)

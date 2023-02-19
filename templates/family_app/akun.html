@@ -29,6 +29,7 @@
                                         <th>No</th>
                                         <th>Email</th>
                                         <th>Username</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -36,6 +37,7 @@
                                         <th>No</th>
                                         <th>Email</th>
                                         <th>Username</th>
+                                        <th>Aksi</th>
 
                                     </tr>
                                 </tfoot>
@@ -45,6 +47,13 @@
                                         <th>{{ forloop.counter }}</th>
                                         <td>{{a.email}}</td>
                                         <td>{{a.username}}</td>
+                                        <td>
+                                            <form method="POST" action="{% url 'hapus-akun' a.id %}" class="ml-2 mt-2">
+                                                {% csrf_token %}
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit" class="btn btn-danger show_confirm"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

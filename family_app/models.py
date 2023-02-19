@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
-
+from PIL import Image
 
 
 class OptionCity(models.Model):
@@ -37,6 +37,11 @@ class Family(models.Model):
     photo=models.ImageField(upload_to='profil',null=True)
     mid=models.IntegerField(null=True, blank=True)
     fid=models.IntegerField(null=True, blank=True)
-    pids=models.IntegerField(null=True, blank=True)
+    pids=models.CharField(max_length=100,null=True, blank=True)
     def __str__(self):
         return self.name
+    
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    profil = models.CharField(max_length=100,null=True, blank=True)

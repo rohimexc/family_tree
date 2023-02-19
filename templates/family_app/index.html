@@ -1,3 +1,4 @@
+{% load my_template_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -85,6 +86,8 @@
               <div class="activite-label">
                 {% if a.sisahari == 0 %}
                   Hari ini <strong>{{a.born |date:"d/m/y"}}</strong>
+                {% elif a.sisahari < 0 %}
+                  {{ a.sisahari|remove_negative }} Hari yang lalu, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
                 {% else%}
                   {{ a.sisahari }} Hari lagi, tanggal <strong>{{a.born |date:"d/m/y"}}</strong>
                 {% endif %}

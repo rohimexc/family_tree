@@ -12,6 +12,7 @@ import json
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Q
+import ast
 
 today = timezone.now().date()
 def index(request):
@@ -52,17 +53,6 @@ def index(request):
     cicit=len(datacicit)
     piut=len(datapiut)
 
-    nearest_birthday = None
-    nearest_birthday_diff = 999
-    databirthday=[]
-    for member in family_members:
-        # Get the difference between the member's birthday and today
-        birthday_diff = abs((member.born.replace(year=today.year) - today).days)
-        person={'name' : member.name, 'sisahari':birthday_diff, 'born':member.born}
-        databirthday.append(person)
-    print(databirthday)
-
-
     family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born', 'country', 'city', 'phone','email','photo'))
     family_members=Family.objects.filter(born__month=today.month)
     nearest_birthday = None
@@ -70,11 +60,11 @@ def index(request):
     databirthday=[]
     for member in family_members:
         # Get the difference between the member's birthday and today
-        birthday_diff = abs((member.born.replace(year=today.year) - today).days)
+        birthday_diff = (member.born.replace(year=today.year) - today).days
         person={'name' : member.name, 'sisahari':birthday_diff, 'born':member.born}
         databirthday.append(person)
     new_list = [{k: v for k, v in d.items() if v is not None} for d in family]
-    new_list = [{k: [v] if k == 'pids' else v for k, v in d.items()} for d in new_list]
+    new_list = [{k: ast.literal_eval(v) if k == 'pids' else v for k, v in d.items()} for d in new_list]
     for i in range(len(new_list)):
         for key, value in new_list[i].items():
             if isinstance(value, date):
@@ -111,6 +101,8 @@ def register(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
         idUser=request.POST.get('username')
+        foto_profil=Family.objects.get(id=idUser)
+        photo=""
         newusername="huseinfamily@"+idUser
         print(newusername)
         if form.is_valid():
@@ -118,11 +110,43 @@ def register(request):
             instance.username=newusername
             instance.save()
             messages.success(request, "Registration successful." )
+            try:
+                user=User.objects.get(username=newusername)
+            except:
+                messages.error(request, "Beluum ada User")
+            if foto_profil.photo:
+                photo=foto_profil.photo
+            if user:
+                buat_profil=Profile.objects.create(
+                    user=user,
+                    profil=photo
+                )
+                buat_profil.save()
             return redirect("akun")
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     context={'form':form, 'optionfamily':optionfamily}
     return render (request, 'family_app/register.html',context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def hapus_akun(request, id_user):
+    user=User.objects.get(id=id_user)
+    if request.method=='POST':
+        user.delete()
+    return redirect("akun")
+
+@login_required(login_url='login')
+def navbar(request):
+    user=request.user
+    try:
+        profil=Profile.objects.get(user=user)
+        photo='./media/' + profil.profil
+    except:
+        photo='./static/img_2/profile-img.jpg'
+    print(photo)
+    context={'photo':photo}
+    return render(request,'family_app/navbar.html',context)
 
 @login_required(login_url='login')
 def admin(request):
@@ -180,14 +204,13 @@ def admin(request):
     databirthday=[]
     for member in family_members:
         # Get the difference between the member's birthday and today
-        birthday_diff = abs((member.born.replace(year=today.year) - today).days)
+        birthday_diff = (member.born.replace(year=today.year) - today).days
         person={'name' : member.name, 'sisahari':birthday_diff, 'born':member.born}
         databirthday.append(person)
 
-
     family=list(Family.objects.values('id','pids','mid','fid','name', 'gender', 'born','death', 'country', 'city', 'phone','email','photo'))
     new_list = [{k: v for k, v in d.items() if v is not None} for d in family]
-    new_list = [{k: [v] if k == 'pids' else v for k, v in d.items()} for d in new_list]
+    new_list = [{k: ast.literal_eval(v) if k == 'pids' else v for k, v in d.items()} for d in new_list]
     for item in new_list:
         if 'photo' in item:
             item['photo'] = './media/' + item['photo']
@@ -202,7 +225,7 @@ def admin(request):
           'anak':anak,
           'cucu':cucu,
           'cicit':cicit,
-          'piut':piut
+          'piut':piut,
           }
     return render(request,'family_app/admin.html',context)
 
@@ -243,16 +266,25 @@ def tambahKeluarga(request):
             relation= form.cleaned_data['relation']
             relation_idf=request.POST.get('relation_from')
             if relation == 'suami' or  relation == 'istri':
-                instance.pids=relation_idf
+                instance.pids=[int(relation_idf)]
                 instance.city=city
                 instance.country=country
                 instance.save()
                 optionFamilyGet=Family.objects.get(id=relation_idf)
-                optionFamilyGet.pids=instance.id
-                optionFamilyGet.save()
+                if optionFamilyGet.pids != None:
+                    parsed_list = ast.literal_eval(optionFamilyGet.pids)
+                    parsed_list.append(instance.id)
+                    optionFamilyGet.pids = parsed_list
+                    optionFamilyGet.save()
+                else:
+                    optionFamilyGet.pids = [instance.id]
+                    optionFamilyGet.save()
+                
             elif relation == 'anak perempuan' or  relation == 'anak laki-laki':
                 instance.fid=relation_idf
-                instance.mid=Family.objects.get(id=relation_idf).pids
+                pasangan=ast.literal_eval(Family.objects.get(id=relation_idf).pids)
+
+                instance.mid=pasangan[0]
                 instance.city=city
                 instance.country=country
                 instance.save()

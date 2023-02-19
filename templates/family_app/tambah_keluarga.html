@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="col-12">
-                      <label for="" class="form-label">Email</label>
+                      <label for="email" class="form-label">Email</label>
                       {{ form.email | as_crispy_field}}
                     </div>
 
@@ -201,6 +201,7 @@
                         });
                         
                       </script>
+                      
 
                     </div>
                     <div class="row mt-3">
@@ -213,11 +214,51 @@
                         <label for="yourRelationForm" class="form-label">Dari</label>
                           <select class="form-select" name='relation_from' id="relation_from" aria-label="Default select example" required>
                             <option selected disabled>Pilih Hubungan Dari</option>
-                            {% for a in optionfamily %}
-                            <option class="non" value="{{a.id}}">{{a.name}}</option>
-                            {% endfor %}
+                            
                           </select>
                       </div>
+                      
+                      <script>
+                        const selectField = document.querySelector('#relation');
+                        const relationFromField = document.querySelector('#relation_from');
+
+                        selectField.addEventListener('change', function() {
+                          const selectedValue = selectField.value;
+                          console.log(selectedValue);
+                          let options = [];
+                          if (selectedValue === 'anak laki-laki' || selectedValue === 'anak perempuan' || selectedValue === 'suami') {
+                            options = [
+                              {% for a in optionfamily %}
+                                {% if a.gender == 'female' %}
+                                  { value: '{{ a.id }}', label: '{{ a.name }}' },
+                                {% endif %}
+                              {% endfor %}
+                            ];
+                          } else if (selectedValue === 'istri') {
+                            options = [
+                              {% for a in optionfamily %}
+                                {% if a.gender == 'male' %}
+                                  { value: '{{ a.id }}', label: '{{ a.name }}' },
+                                {% endif %}
+                              {% endfor %}
+                            ];
+                          } else {
+                            options = [
+                              {% for a in optionfamily %}
+                                  { value: '{{ a.id }}', label: '{{ a.name }}' },
+                              {% endfor %}
+                            ];
+                          }
+                          relationFromField.innerHTML = '';
+                          options.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option.value;
+                            optionElement.textContent = option.label;
+                            relationFromField.appendChild(optionElement);
+                          });
+                        });
+
+                      </script>
                       
                     </div>
                     <div class="col-12">
@@ -235,6 +276,7 @@
 
                 </div>
               </div>
+              
 
 
             </div>
@@ -249,6 +291,7 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- vendor_2 JS Files -->
+  
   <script src="{% static 'vendor_2/apexcharts/apexcharts.min.js' %}"></script>
   <script src="{% static 'vendor_2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor_2/chart.js/chart.umd.js' %}"></script>

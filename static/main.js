@@ -15,6 +15,12 @@ var family = new FamilyTree(document.getElementById('tree'), {
             icon: FamilyTree.icon.pdf(24, 24, "#7A7A7A"),
             onClick: pdf
         },
+        pdfPreview: {
+            text: "PDF Preview",
+            icon: FamilyTree.icon.pdf(24, 24, '#7A7A7A'),
+            onClick: preview
+        },
+        svg: { text: "Export SVG" },
         xml: { text: "Export XML" },
         csv: { text: "Export CSV" },
         json: { text: "Export JSON" },
@@ -58,6 +64,7 @@ var family = new FamilyTree(document.getElementById('tree'), {
             { type: 'textbox', label: 'Photo Url', binding: 'photo', btn: 'Upload' },
         ]
     },
+
 });
 
 family.on('field', function (sender, args) {
@@ -77,11 +84,15 @@ function importXMLHandler(){
 function importCSVHandler(){
     family.importCSV();
 }
-
 button.addEventListener("click", function() {
     alert("Proses Penyimpanan");
     pdf();
   });
+function preview() {
+    FamilyTree.pdfPrevUI.show(family, {
+        format: 'A4'
+    });
+}
 // var data = JSON.parse('{{ data|safe }}');
 family.load(data)
 FamilyTree.scroll.safari = {smooth: 12,speed: 500};
