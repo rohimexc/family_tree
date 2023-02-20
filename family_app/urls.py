@@ -4,7 +4,8 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.views.static import serve
+from django.conf.urls import url
 
 urlpatterns = [
      path('', views.index, name='index'),
@@ -18,4 +19,6 @@ urlpatterns = [
      path('hapus-keluarga/<str:id>', views.hapusKeluarga, name='hapus-keluarga'),
      path('report', views.report, name='report'),
      path('akun', views.akun, name='akun'),
+     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
