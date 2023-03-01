@@ -71,7 +71,7 @@ def index(request):
                 new_list[i][key] = value.strftime('%Y-%m-%d')
     for item in new_list:
         if 'photo' in item:
-            item['photo'] = './media/' + item['photo']
+            item['photo'] = 'https://rohimexc.pythonanywhere.com/media/' + item['photo']
     context={
         'data': json.dumps(new_list),
          'databirthday': databirthday,
@@ -167,7 +167,7 @@ def admin(request):
     idcucu=[]
     idcicit=[]
     idpiut=[]
-    
+
     dataanak=Family.objects.filter(Q(mid=id_user) | Q(fid=id_user))
     for a in dataanak:
         idanak.append(a.id)
@@ -213,8 +213,8 @@ def admin(request):
     new_list = [{k: ast.literal_eval(v) if k == 'pids' else v for k, v in d.items()} for d in new_list]
     for item in new_list:
         if 'photo' in item:
-            item['photo'] = './media/' + item['photo']
-            
+            item['photo'] = 'https://rohimexc.pythonanywhere.com/media/' + item['photo']
+
     for i in range(len(new_list)):
         for key, value in new_list[i].items():
             if isinstance(value, date):
@@ -279,7 +279,7 @@ def tambahKeluarga(request):
                 else:
                     optionFamilyGet.pids = [instance.id]
                     optionFamilyGet.save()
-                
+
             elif relation == 'anak perempuan' or  relation == 'anak laki-laki':
                 instance.fid=relation_idf
                 pasangan=ast.literal_eval(Family.objects.get(id=relation_idf).pids)

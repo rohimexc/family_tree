@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard-Admin</title>
+  <title>Dashboard-Admin Family Tree Husain</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -72,7 +72,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{request.user}}</h6>
-              
+
               <span>Web Designer</span>
             </li>
 
@@ -110,7 +110,7 @@
         <a class="nav-link collapsed" href="{% url 'database' %}">
           <i class="bi bi-layout-text-window-reverse"></i><span>Database Keluarga</span>
         </a>
-        
+
       </li><!-- End Tables Nav -->
       {% if request.user.is_superuser %}
       <li class="nav-item">
@@ -165,7 +165,7 @@
     {% for msg in messages %}
       {% if msg.tags == "success" %}
       Swal.fire({
-        
+
         icon: 'success',
         title: 'Sukses',
         text: '{{ msg }}',
@@ -174,7 +174,7 @@
       });
       {% elif msg.tags == 'warning' %}
       Swal.fire({
-        
+
         icon: 'warning',
         title: 'Warning',
         text: '{{ msg }}',
@@ -183,7 +183,7 @@
       });
       {% elif msg.tags == 'error' %}
       Swal.fire({
-        
+
         icon: 'error',
         title: 'Error',
         text: '{{ msg }}',

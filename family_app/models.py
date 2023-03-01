@@ -39,7 +39,7 @@ class Family(models.Model):
     pids=models.CharField(max_length=100,null=True, blank=True)
     def __str__(self):
         return self.name
-    
+
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
